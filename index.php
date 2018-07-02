@@ -4,11 +4,23 @@
     
     $Remessa = new Remessa();
     $dados = [
-        'cliente_nome' => 'Edno Nunes Ferreira',
+        'agencia'      => '0172',
+        'empresa_inscricao_tipo'   => 2, // 1 = CPF 2 = CNPJ
+        'empresa_inscricao_numero' => '77777777777777', // 14 carac
+        'conta' => '10341',
+        'dac'   => '0',
+        'nome_empresa' => 'MAKIYAMA INFORMÁTICA LTDA', 
     ];
-    echo $Remessa->gerarRemessa('314', 'cnab240', $dados);
 ?>
 
-<h1>Teste</h1>
+<h1>Remessa de pagamento</h1>
 
-<p>Apenas um teste</p>
+<p>Atualmente do ITAU Cnab240</p>
+<p>Amostra:</p>
+
+<p>
+    <?php
+        $dados = $Remessa->gerarRemessa('341', 'cnab240', $dados);
+        echo $dados['link'];
+    ?>
+</p>
