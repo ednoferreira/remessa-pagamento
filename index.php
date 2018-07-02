@@ -17,7 +17,6 @@
 
 <p>Atualmente do ITAU Cnab240</p>
 <p>Amostra:</p>
-
 <p>
     <?php
         $dados = $Remessa->gerarRemessa('341', 'cnab240', $dados);

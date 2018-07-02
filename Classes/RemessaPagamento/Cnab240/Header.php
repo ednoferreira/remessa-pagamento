@@ -46,20 +46,19 @@ class Header {
         $linha .= setValor($dados['banco']['nome_banco'], 30);
         // BRANCOS             | COMPLEMENTO DE REGISTRO             | 133 142   | X(10)   |
         $linha .= setValor('', 10);
-        /*
         // ARQUIVO-CÓDIGO      | CÓDIGO REMESSA/RETORNO              | 143 143   | 9(01)   | 1=REMESSA 2=RETORNO
-        $linha .= $dados[''];
+        $linha .= setValor($dados['cod_remessa'], 1);
         // DATA DE GERAÇÃO     | DATA DE GERAÇÃO DO ARQUIVO          | 144 151   | 9(08)   | DDMMAAAA
-        $linha .= $dados[''];
+        $linha .= date('dmY');
         // HORA DA GERAÇÃO     | HORA DE GERAÇÃO DO ARQUIVO          | 152 157   | 9(06)   | HHMMSS
-        $linha .= $dados[''];
+        $linha .= date('His');
         // ZEROS               | COMPLEMENTO DE REGISTRO             | 158 166   | 9(09)   |
-        $linha .= $dados[''];
+        $linha .= setValor('', 9, '0');
         // UNIDADE DE DENSIDADE| DENSIDADE DE GRAVAÇÃO DO ARQUIVO    | 167 171   | 9(05)   | NOTA 2
-        $linha .= $dados[''];
+        $linha .= setValor('', 5, '0');
         // BRANCOS             | COMPLEMENTO DE REGISTRO             | 172 240   | X(69)   |
-        $linha .= $dados[''];
-        */
+        $linha .= setValor('', 69);
+        //
         return $linha;
     }
 

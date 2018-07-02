@@ -13,6 +13,9 @@
  // Funções auxiliares:
 include 'Classes/RemessaPagamento/Funcoes.php';
 
+// Timezone:
+date_default_timezone_set('America/Sao_Paulo');
+
 class Remessa {
 
     // Lista de bancos disponíveis:

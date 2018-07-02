@@ -17,10 +17,10 @@ class Arquivo240 {
         'tipo_registro'            => '0',
         'complemento_registro'     => '',
         'layout_arquivo'           => '081',
-        'empresa_inscricao_tipo'   => '2', //1 = CPF 2 = CNPJ
+        'empresa_inscricao_tipo'   => '2', //1 = CPF, 2 = CNPJ
         'empresa_inscricao_numero' => null,
         'agencia'                  => null,
-        //'' => '',
+        'cod_remessa'              => '1', // 1 = remessa, 2 = retorno
         //'' => '',
     ];
 
