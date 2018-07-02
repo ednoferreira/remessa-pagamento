@@ -3,7 +3,7 @@
 /**
  * Gerar o header do arquivo
  */
-class Header {
+class HeaderArquivo {
 
     /**
      * Gerar o Header de Arquivo

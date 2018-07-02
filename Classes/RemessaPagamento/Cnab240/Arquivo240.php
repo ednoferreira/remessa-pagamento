@@ -1,6 +1,6 @@
 <?php
 
-include 'Classes/RemessaPagamento/Cnab240/Header.php';
+include 'Classes/RemessaPagamento/Cnab240/HeaderArquivo.php';
 
 class Arquivo240 {
 
@@ -46,10 +46,10 @@ class Arquivo240 {
             die('Nâo foi possível criar o arquivo '. $nome_arq);
         }
         // Montamos o arquivo:
-        $header = Header::gerar($this->dados);
+        $headerArquivo = HeaderArquivo::gerar($this->dados);
 
         // Inserimos as linhas ao arq:
-        fwrite($arq, $header);
+        fwrite($arq, $headerArquivo);
         fclose($arq);
         return $nome_arq;
     }
