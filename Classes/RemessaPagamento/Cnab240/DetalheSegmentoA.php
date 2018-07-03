@@ -17,7 +17,7 @@ class DetalheSegmentoA {
         // CÓDIGO DO BANCO             | CÓDIGO BANCO NA COMPENSAÇÃO                          | 001 003   | 9(03)       | 341
         $linha .= setValor($detalhe['cod_banco'], 3);
         // CÓDIGO DO LOTE              | LOTE DE SERVIÇO                                      | 004 007   | 9(04)       | NOTA 3
-        $linha .= setValor($detalhe['detalhe_cod_lote'], 4);
+        $linha .= setValor($detalhe['detalhe_cod_lote'], 4, '0', 'esquerda');
         // TIPO DE REGISTRO            | REGISTRO DETALHE DE LOTE                             | 008 008   | 9(01)       | 3
         $linha .= setValor($detalhe['detalhe_tipo_registro'], 1);
         // NÚMERO DO REGISTRO          | Nº SEQUENCIAL REGISTRO NO LOTE                       | 009 013   | 9(05)       | NOTA 9

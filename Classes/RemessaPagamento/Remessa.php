@@ -33,7 +33,52 @@ class Remessa {
     public $dados = [];
     public $detalhes = [];
 
+    /** 
+     * Campos que entram na geração do arquivo;
+     * nome_campo => valor_padrao ou null
+     */
+    public $campos = [
+        //
+        'agencia'                  => null,
+        'empresa_inscricao_tipo'   => null, // 1 = CPF 2 = CNPJ
+        'empresa_inscricao_numero' => null, // 14 carac
+        'empresa_nome'             => null, 
+        'empresa_endereco'         => null, 
+        'empresa_endereco_numero'  => null,
+        'empresa_endereco_complemento' => null,
+        'empresa_cidade'           => null,
+        'empresa_cep'              => null,
+        'empresa_uf'               => null,
+        'conta'                    => null,
+        'dac'                      => null,
+        'qtd_lotes'                => '1',
+        // HeaderArquivo
+        'cod_banco'                => '341',
+        'cod_lote_servico'         => '0000',
+        'tipo_registro'            => '0',
+        'complemento_registro'     => '',
+        'layout_arquivo'           => '081',
+        'empresa_inscricao_tipo'   => '2', //1 = CPF, 2 = CNPJ
+        'empresa_inscricao_numero' => null,
+        'agencia'                  => null,
+        // HeaderLote
+        'cod_remessa'              => '1', // 1 = remessa, 2 = retorno
+        'header_cod_lote'          => '0001', // sequencial (NOTAS 3)
+        'tipo_registro'            => '1',
+        'tipo_operacao'            => 'C', // C = Crédito
+        'tipo_pagamento'           => '98', // 98 = Diversos, ver a pagina NOTAS > NOTA 4 do PDF
+        'forma_pagamento'          => '01', // 01 = CRÉDITO EM CONTA CORRENTE NO ITAÚ / (NOTAS 5)
+        'layout_lote'              => '040',
+        'identificacao_lancamento' => 'HP13', // NOTAS 13
+        'finalidade_lote'          => '10', // NOTAS 6
+        // Detalhe Segmento A
+    ];
+
     public function __construct($codigo_banco, $formato = 'cnab240', $dados, $detalhes = []) {
+
+        // validamos os valores recebidos e valores padrão:
+        $dados = Self::setValoresPadrao($dados);
+
         $this->dados        = $dados;
         $this->formato      = $formato;
         $this->codigo_banco = $codigo_banco;
@@ -64,6 +109,11 @@ class Remessa {
         $this->dados    = Self::tratarString($this->dados);
         $this->detalhes = Self::tratarString($this->detalhes);
 
+        // qtd de registros(detalhes)
+        $this->dados['qtd_registros'] = count($this->detalhes);
+        // Soma dos pagamentos:
+        $this->dados['total_pagamentos'] = Self::getTotalPagamentos($this->detalhes);
+
         switch ($this->formato) {
             // Formato CNAB240
             case 'cnab240':
@@ -71,6 +121,8 @@ class Remessa {
                 $r = new Arquivo240($this->dados, $caminho_arquivo);
                 
                 foreach($this->detalhes as $detalhe){
+                    // mesclamos o detalhe com o array principal:
+                    $detalhe = array_merge($detalhe, $this->dados);
                     $r->inserirDetalhe($detalhe);
                 }
 
@@ -158,5 +210,35 @@ class Remessa {
             if(is_file($a))
                 unlink($a);
         }
+    }
+
+    /**
+     * Setamos os valores padrão, caso não estejam no array de entrada
+     */
+    public function setValoresPadrao($dados) {
+        foreach($this->campos as $campo => $valor) {
+            if(!isset($dados[$campo]) ){
+                if ( is_null($valor) )
+                    die('O campo "'.$campo.'" não possui um valor padrão.');
+                else
+                    $dados[$campo] = $valor;
+            }
+        }
+        return $dados;
+    }
+
+    /**
+     * Obter o total de pagamentos do lote
+     */
+    public function getTotalPagamentos($detalhes) {
+        $total = 0;
+        foreach($detalhes as $d){
+            if(isset($d['detalhe_valor_pagamento'])){
+                // substituir a vírgula pelo ponto, para não dar problema na soma:
+                $valor = str_replace(',', '.', $d['detalhe_valor_pagamento']);
+                $total += $valor;
+            }
+        }
+        return $total;
     }
 }

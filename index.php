@@ -1,6 +1,9 @@
 <?php
 
     require 'Classes/RemessaPagamento/Remessa.php';
+
+    // número sequencial do lote:
+    $cod_lote = '1';
     
     // Informações da remessa:
     $dados_remessa = [
@@ -17,7 +20,7 @@
         'conta'                        => '10341',
         'dac'                          => '0',
         // Detalhe
-        'detalhe_cod_lote'           => '0001', // sequencial por lote (NOTAS 3)
+        'detalhe_cod_lote'           => $cod_lote, // sequencial por lote (NOTAS 3)
         'detalhe_tipo_registro'      => '3',
         'segmento_codigo'            => 'A',
         'detalhe_tipo_movimento'     => '000', // 000 = inclusão de pagamento (NOTAS 10)
@@ -33,19 +36,15 @@
         'detalhe_data_efetiva'       => '',
         'detalhe_valor_efetivo'      => '',
         'detalhe_numero_documento'   => '',
+        // Trailer de lote
+        'trailer_lote_cod_lote'           => $cod_lote,
+        'trailer_lote_tipo_registro'      => '5',
+        // Trailer de arquivo
+        'trailer_arq_cod_lote'       => '9999',
+        'trailer_arq_tipo_registro'  => '9',
     ];
+    
     // Lista dos favorecidos:
-    $favorecidos[] = [
-        'detalhe_numero_registro'    => '1', // sequencial por detalhe (NOTAS 9)
-        'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
-        // agencia + conta do favorecido (**** ver NOTA 11 pois existem especificações!):
-        'detalhe_favorecido_agencia_conta' => '00024 000000014062 6', 
-        'detalhe_favorecido_nome'    => 'Maria Joana Santos',
-        'detalhe_seu_numero'         => 'F01', // número do documento do favorecido, sequencial
-        'detalhe_data_pagamento'     => '01122018',
-        'detalhe_valor_pagamento'    => '152,25',
-        'detalhe_cpf_cnpj'           => '66666666666',
-    ];
     $favorecidos[] = [
         'detalhe_numero_registro'    => '2', // sequencial por detalhe (NOTAS 9)
         'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
