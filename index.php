@@ -16,6 +16,10 @@
         'empresa_uf'                   => 'es',
         'conta'                        => '10341',
         'dac'                          => '0',
+        // Pagamentos a serem efetuados (para fim de teste)
+        'registros'                    => [
+
+        ]
     ];
 ?>
 

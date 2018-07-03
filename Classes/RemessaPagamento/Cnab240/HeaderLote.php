@@ -16,7 +16,7 @@ class HeaderLote {
         // CÓDIGO DO BANCO             | CÓDIGO BANCO NA COMPENSAÇÃO                          | 001 003   | 9(03)   | 341
         $linha .= setValor($dados['cod_banco'], 3);
         // CÓDIGO DO LOTE              | LOTE IDENTIFICAÇÃO DE PAGTOS                         | 004 007   | 9(04)   | NOTA 3
-        $linha .= setValor($dados['cod_lote'], 4);
+        $linha .= setValor($dados['header_cod_lote'], 4);
         // TIPO DE REGISTRO            | REGISTRO HEADER DE LOTE                              | 008 008   | 9(01)   | 1
         $linha .= setValor($dados['tipo_registro'], 1);
         // (1) TIPO DE OPERAÇÃO        | TIPO DA OPERAÇÃO                                     | 009 009   | X(01)   | C=CRÉDITO
