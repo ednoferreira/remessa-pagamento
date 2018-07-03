@@ -72,8 +72,8 @@ class Arquivo240 {
         $headerLote    = HeaderLote::gerar($this->dados);
 
         // Inserimos as linhas ao arq:
-        fwrite($arq, $headerArquivo);
-        fwrite($arq, $headerLote);
+        fwrite($arq, $headerArquivo . PHP_EOL);
+        fwrite($arq, $headerLote . PHP_EOL);
         fclose($arq);
         return $nome_arq;
     }
