@@ -33,7 +33,7 @@ class DetalheSegmentoA {
         // AGÊNCIA CONTA               | AGÊNCIA CONTA FAVORECIDO                             | 024 043   | X(20)       | NOTA 11
         $linha .= setValor($detalhe['detalhe_favorecido_agencia_conta'], 20);
         // NOME DO FAVORECIDO          | NOME DO FAVORECIDO                                   | 044 073   | X(30)       | NOTA 35
-        $linha .= setValor($detalhe['detalhe_favorecido_nome'], 30);
+        $linha .= setValor($detalhe['detalhe_favorecido_nome'], 30, ' ');
         // SEU NÚMERO                  | Nº DOCTO ATRIBUÍDO PELA EMPRESA                      | 074 093   | X(20)       | 
         $linha .= setValor($detalhe['detalhe_seu_numero'], 20);
         // (1) DATA DE PAGTO           | DATA PREVISTA PARA PAGTO                             | 094 101   | 9(08)       | DDMMAAAA

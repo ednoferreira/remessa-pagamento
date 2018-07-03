@@ -29,39 +29,52 @@ class Remessa {
     // concatenar o nome do arquivo com a datahora geracao:
     public $concatenarDataHora = true;
 
-    public function __construct() {
-        
+    public $formato;
+    public $dados = [];
+    public $detalhes = [];
+
+    public function __construct($codigo_banco, $formato = 'cnab240', $dados, $detalhes = []) {
+        $this->dados        = $dados;
+        $this->formato      = $formato;
+        $this->codigo_banco = $codigo_banco;
+        // favorecidos:
+        $this->detalhes     = $detalhes;
     }
 
     /**
      * Recebe os dados da remessa a ser gerada
      * retorna link para o download do arquivo
      */
-    public function gerarRemessa($codigo_banco, $formato = 'cnab240', $dados)
+    public function gerarRemessa()
     {
         $resposta = [];
 
         // Removemos os arquivos anteriores para não deixar lixo:
         Self::removerArquivosAnteriores();
-        
-        // insere os dados do banco aos parâmetros:
-        $dados['banco'] = Self::getBanco($codigo_banco);
 
         // Nome do arquivo a ser gerado:
         $nome_arquivo = Self::getNomeArquivo();
         // Caminho a ser salvo o arquivo;
         $caminho_arquivo = Self::getCaminhoArquivo();
 
-        // Tratamos os dados de entrada:
-        $dados = Self::tratarString($dados);
+        // insere os dados do banco aos parâmetros:
+        $this->dados['banco'] = Self::getBanco($this->codigo_banco);
 
-        switch ($formato) {
+        // Tratamos os dados de entrada:
+        $this->dados    = Self::tratarString($this->dados);
+        $this->detalhes = Self::tratarString($this->detalhes);
+
+        switch ($this->formato) {
             // Formato CNAB240
             case 'cnab240':
                 include 'Cnab240/Arquivo240.php';
-                $r = new Arquivo240($dados, $caminho_arquivo);
-                $arq = $r->gerarArquivo();
+                $r = new Arquivo240($this->dados, $caminho_arquivo);
+                
+                foreach($this->detalhes as $detalhe){
+                    $r->inserirDetalhe($detalhe);
+                }
 
+                $arq = $r->gerarArquivo();
                 $resposta = [
                     'nome_arquivo' => $nome_arquivo,
                     'link'         => '<a href="'.$arq.'" target="_blank">'.$nome_arquivo.'</a>',
@@ -69,7 +82,7 @@ class Remessa {
             break;
 
             default:
-                throw new \InvalidArgumentException('Formato Cnab inválido: '. $formato);
+                throw new \InvalidArgumentException('Formato Cnab inválido: '. $this->formato);
         }
 
         return $resposta;

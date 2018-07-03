@@ -8,6 +8,7 @@ class Arquivo240 {
 
     public $dados;
     public $nome_arquivo;
+    public $detalhes = [];
 
     /** 
      * Campos que entram na geração do HEADER;
@@ -47,8 +48,10 @@ class Arquivo240 {
         'identificacao_lancamento' => 'HP13', // NOTAS 13
         'finalidade_lote'          => '10', // NOTAS 6
         // Detalhe Segmento A
-            
-        // Valores fixos por detalhe
+    ];
+
+    // Detalhe
+    /*
             'detalhe_cod_lote'           => '0001', // sequencial por lote (NOTAS 3)
             'detalhe_tipo_registro'      => '3',
             'segmento_codigo'            => 'A',
@@ -75,7 +78,7 @@ class Arquivo240 {
             'detalhe_data_pagamento'     => '01122018',
             'detalhe_valor_pagamento'    => '152,25',
             'detalhe_cpf_cnpj'           => '66666666666',
-    ];
+     */
     
     public function __construct($dados, $nome_arquivo) {
         // validamos os valores recebidos e valores padrão:
@@ -85,6 +88,10 @@ class Arquivo240 {
         // nome do arquivo a ser gerado:
         $this->nome_arquivo = $nome_arquivo;
         // TO DO: Colocar o próprio remessa para gerar o arquivo após receber apenas a string
+    }
+
+    public function inserirDetalhe($detalhe){
+        $this->detalhes[] = $detalhe;
     }
 
     /**
@@ -100,12 +107,14 @@ class Arquivo240 {
         // Montamos o arquivo:
         $headerArquivo = HeaderArquivo::gerar($this->dados);
         $headerLote    = HeaderLote::gerar($this->dados);
-        $detalheA      = DetalheSegmentoA::gerar($this->dados);
-
         // Inserimos as linhas ao arq:
         fwrite($arq, $headerArquivo . PHP_EOL);
         fwrite($arq, $headerLote    . PHP_EOL);
-        fwrite($arq, $detalheA      . PHP_EOL);
+        // Detalhes:;
+        foreach($this->detalhes as $detalhe){
+            $detalheA      = DetalheSegmentoA::gerar($detalhe);
+            fwrite($arq, $detalheA . PHP_EOL);
+        }
         fclose($arq);
         //
         return $nome_arq;
