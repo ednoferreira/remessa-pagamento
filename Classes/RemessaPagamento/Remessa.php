@@ -53,7 +53,7 @@ class Remessa {
         $caminho_arquivo = Self::getCaminhoArquivo();
 
         // Tratamos os dados de entrada:
-        $dados = Self::removerAcentos($dados);
+        $dados = Self::tratarString($dados);
 
         switch ($formato) {
             // Formato CNAB240
@@ -98,17 +98,20 @@ class Remessa {
     }
 
     /**
-     * Percorremos o array para remover acentos chamando uma função externa
+     * Percorremos o array para remover acentos chamando uma função externa,
+     * também colocamos em uppercase
      * Pode ser array multidimensional:
      */
-    public function removerAcentos($string){
+    public function tratarString($string){
         if(is_array($string)){
             //var_dump($string); exit;
             foreach($string as $campo => $valor){
-                $string[$campo] = Self::removerAcentos($valor);
+                $valor = Self::tratarString($valor);
+                $string[$campo] = $valor;
             }
         }else{
-            $string = removerAcentos($string);
+            $string  = removerAcentos($string);
+            $string  = strtoupper($string);
         }
         return $string;
     }

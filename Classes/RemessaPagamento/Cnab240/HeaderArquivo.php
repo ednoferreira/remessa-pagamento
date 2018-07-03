@@ -40,8 +40,7 @@ class HeaderArquivo {
         // DAC                 | DAC DA AGÊNCIA/CONTA DEBITADA       | 072 072   | 9(01)   | NOTA 1
         $linha .= setValor($dados['dac'], 1);
         // NOME DA EMPRESA     | NOME DA EMPRESA                     | 073 102   | X(30)   |
-        $linha .= setValor($dados['nome_empresa'], 30);
-        
+        $linha .= setValor($dados['empresa_nome'], 30);
         // NOME DO BANCO       | NOME DO BANCO                       | 103 132   | X(30)   | 
         $linha .= setValor($dados['banco']['nome_banco'], 30);
         // BRANCOS             | COMPLEMENTO DE REGISTRO             | 133 142   | X(10)   |
