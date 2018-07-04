@@ -18,7 +18,7 @@
         'empresa_cep'                  => '5555555',
         'empresa_uf'                   => 'es',
         'conta'                        => '10341',
-        'dac'                          => '0',
+        'dac'                          => '0', // "dígito de auto conferência", é o dígito da conta
         // Detalhe
         'detalhe_cod_lote'           => $cod_lote, // sequencial por lote (NOTAS 3)
         'detalhe_tipo_registro'      => '3',
@@ -66,6 +66,17 @@
         'detalhe_data_pagamento'     => '01122018',
         'detalhe_valor_pagamento'    => '25,55',
         'detalhe_cpf_cnpj'           => '99999999999',
+    ];
+    $favorecidos[] = [
+        'detalhe_numero_registro'    => '3', // sequencial por detalhe (NOTAS 9)
+        'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
+        // agencia + conta do favorecido (**** ver NOTA 11 pois existem especificações!):
+        'detalhe_favorecido_agencia_conta' => '00024 000000014099 6', 
+        'detalhe_favorecido_nome'    => 'Ricardo Morais',
+        'detalhe_seu_numero'         => 'F04', // número do documento do favorecido, sequencial
+        'detalhe_data_pagamento'     => '01122018',
+        'detalhe_valor_pagamento'    => '90',
+        'detalhe_cpf_cnpj'           => '33333333333',
     ];
 
     $Remessa = new Remessa('341', 'cnab240', $dados_remessa, $favorecidos);

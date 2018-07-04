@@ -71,7 +71,31 @@ class Remessa {
         'layout_lote'              => '040',
         'identificacao_lancamento' => 'HP13', // NOTAS 13
         'finalidade_lote'          => '10', // NOTAS 6
+        /* Estes campos vêm na hora de gerar o arquivo:
         // Detalhe Segmento A
+        'detalhe_cod_lote'           => '', // sequencial por lote (NOTAS 3)
+        'detalhe_tipo_registro'      => '3',
+        'segmento_codigo'            => 'A',
+        'detalhe_tipo_movimento'     => '000', // 000 = inclusão de pagamento (NOTAS 10)
+        'detalhe_camara'             => '888', // Notas 37
+        'detalhe_moeda'              => 'REA', // REA ou 009
+        'detalhe_cod_ispb'           => '888', // NOTAS 37
+        'detalhe_finalidade'         => '', // NOTAS 13
+        'detalhe_finalidade_doc_status' => '01', // 01 = crédito em conta - NOTAS 30
+        'detalhe_finalidade_ted'        => '00010', // 00010 = crédito em conta - NOTAS 26
+        'detalhe_aviso'              => '0', // Notas 16
+        // Campos que constam apenas no arquivo de retorno, ou seja, vão em branco ou zeros na remessa:
+        'detalhe_nosso_numero'       => '', // para gerar: brancos. No retorno que vem preenchido (NOTAS 12)
+        'detalhe_data_efetiva'       => '',
+        'detalhe_valor_efetivo'      => '',
+        'detalhe_numero_documento'   => '',
+        // Trailer de lote
+        'trailer_lote_cod_lote'           => $cod_lote,
+        'trailer_lote_tipo_registro'      => '5',
+        // Trailer de arquivo
+        'trailer_arq_cod_lote'       => '9999',
+        'trailer_arq_tipo_registro'  => '9',
+        */
     ];
 
     public function __construct($codigo_banco, $formato = 'cnab240', $dados, $detalhes = []) {
