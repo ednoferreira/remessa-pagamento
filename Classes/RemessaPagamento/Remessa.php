@@ -21,13 +21,7 @@ class Remessa {
     // Lista de bancos disponíveis:
     const ITAU = 341;
 
-    // nome do arquivo de saida:
-    public $nomeArquivo     = 'remessa';
-    public $extensaoArquivo = 'txt';
-    // onde gerar o arquivo?
-    public $caminhoArquivo  = 'arquivos_gerados';
-    // concatenar o nome do arquivo com a datahora geracao:
-    public $concatenarDataHora = true;
+    public $caminhoArquivo = 'remessas';
 
     public $formato;
     public $dados = [];
@@ -114,17 +108,14 @@ class Remessa {
      * Recebe os dados da remessa a ser gerada
      * retorna link para o download do arquivo
      */
-    public function gerarRemessa()
+    public function gerarRemessa($nome_arquivo)
     {
         $resposta = [];
 
         // Removemos os arquivos anteriores para não deixar lixo:
         Self::removerArquivosAnteriores();
 
-        // Nome do arquivo a ser gerado:
-        $nome_arquivo = Self::getNomeArquivo();
-        // Caminho a ser salvo o arquivo;
-        $caminho_arquivo = Self::getCaminhoArquivo();
+        $caminho_arquivo = $this->caminhoArquivo . DIRECTORY_SEPARATOR . $nome_arquivo;
 
         // insere os dados do banco aos parâmetros:
         $this->dados['banco'] = Self::getBanco($this->codigo_banco);
@@ -145,12 +136,20 @@ class Remessa {
                 $r = new Arquivo240($this->dados, $caminho_arquivo);
                 
                 foreach($this->detalhes as $detalhe){
+
+                    // Montar o campo agencia_conta dependendo do banco:
+                    $detalhe['detalhe_favorecido_agencia_conta'] = Self::montarAgenciaContaFavorecido($detalhe);
+
                     // mesclamos o detalhe com o array principal:
                     $detalhe = array_merge($detalhe, $this->dados);
                     $r->inserirDetalhe($detalhe);
                 }
 
-                $arq = $r->gerarArquivo();
+                $remessa = $r->gerarLinhas();
+
+                // gera o arquivo
+                $arq = Self::gerarArquivo( $remessa, $caminho_arquivo );
+
                 $resposta = [
                     'nome_arquivo' => $nome_arquivo,
                     'link'         => '<a href="'.$arq.'" target="_blank">'.$nome_arquivo.'</a>',
@@ -187,6 +186,21 @@ class Remessa {
     }
 
     /**
+     * Gera o arquivo txt (ou outra extensão) a partir da string recebida
+     */
+    public function gerarArquivo($conteudo, $caminho_arquivo) {
+
+        $arq = fopen($caminho_arquivo, 'w');
+        if(! $arq){
+            die('Nâo foi possível criar o arquivo '. $caminho_arquivo);
+        }
+        fwrite($arq, $conteudo);
+        fclose($arq);
+
+        return $caminho_arquivo;
+    }
+
+    /**
      * Percorremos o array para remover acentos chamando uma função externa,
      * também colocamos em uppercase
      * Pode ser array multidimensional:
@@ -206,30 +220,11 @@ class Remessa {
     }
 
     /**
-     * Gera o nome do arquivo de saída, 
-     * de acordo com o caminho do diretório, extensão e outras condições:
-     */
-    public function getNomeArquivo() {
-        $nome = $this->nomeArquivo;
-        if($this->concatenarDataHora){
-            $nome .= '_'.date('d_m_Y_H_i_s');
-        }
-        $nome .= '.'.$this->extensaoArquivo;
-        return $nome;
-    }
-
-    /**
-     * Obtemos o caminho onde o arquivo será salvo:
-     */
-    public function getCaminhoArquivo() {
-        return $this->caminhoArquivo. DIRECTORY_SEPARATOR .Self::getNomeArquivo();
-    }
-
-    /**
      * Remover arquivos gerados anteriormente:
      */
     public function removerArquivosAnteriores() {
-        $arquivos = glob($this->caminhoArquivo . DIRECTORY_SEPARATOR . '*');
+        $path =  '.' . DIRECTORY_SEPARATOR . $this->caminhoArquivo . DIRECTORY_SEPARATOR . '*';
+        $arquivos = glob($path);
         foreach($arquivos as $a){
             if(is_file($a))
                 unlink($a);
@@ -264,5 +259,35 @@ class Remessa {
             }
         }
         return $total;
+    }
+
+    /**
+     * Montar o campo agencia + conta do favorecido
+     * de acordo com algumas especificações do Itaú:
+     * Ver o item NOTAS 11 do pdf para referência
+     * retorna algo assim:
+     * 00024 000000014058 6
+     */
+    public function montarAgenciaContaFavorecido($detalhe) {
+
+        $conteudo = '';
+        // Se for do banco Itau:
+        if($detalhe['detalhe_favorecido_banco'] == '341'){
+            $conteudo  = setValor('', 1, '0');
+            $conteudo .= setValor($detalhe['detalhe_favorecido_agencia'], 4, '0', 'esquerda');
+            $conteudo .= setValor('', 1);
+            $conteudo .= setValor('', 6, '0');
+            $conteudo .= setValor($detalhe['detalhe_favorecido_conta'], 6, '0', 'esquerda');
+            $conteudo .= setValor('', 1);
+            $conteudo .= setValor($detalhe['detalhe_favorecido_digito'], 1);
+        }else{
+            $conteudo .= setValor($detalhe['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
+            $conteudo .= setValor('', 1);
+            $conteudo .= setValor($detalhe['detalhe_favorecido_conta'], 12, '0', 'esquerda');
+            $conteudo .= setValor('', 1);
+            $conteudo .= setValor($detalhe['detalhe_favorecido_digito'], 1);
+        }
+
+        return $conteudo;
     }
 }

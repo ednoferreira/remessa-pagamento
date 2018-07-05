@@ -42,12 +42,9 @@ class Arquivo240 {
             'detalhe_cpf_cnpj'           => '66666666666',
      */
     
-    public function __construct($dados, $nome_arquivo) {
+    public function __construct($dados) {
         //
         $this->dados = $dados;
-        // nome do arquivo a ser gerado:
-        $this->nome_arquivo = $nome_arquivo;
-        // TO DO: Colocar o próprio remessa para gerar o arquivo após receber apenas a string
     }
 
     public function inserirDetalhe($detalhe){
@@ -55,15 +52,11 @@ class Arquivo240 {
     }
 
     /**
-     * Gera o arquivo de remessa de pagamento
+     * Gera a string de remessa de pagamento
      */
-    public function gerarArquivo() {
-
-        $nome_arq = $this->nome_arquivo;
-        $arq = fopen($nome_arq, 'w');
-        if(! $arq){
-            die('Nâo foi possível criar o arquivo '. $nome_arq);
-        }
+    public function gerarLinhas() {
+        
+        $conteudo = '';
         // Montamos o arquivo:
         $headerArquivo  = HeaderArquivo::gerar($this->dados);
         $headerLote     = HeaderLote::gerar($this->dados);
@@ -71,19 +64,19 @@ class Arquivo240 {
         $trailerArquivo = TrailerArquivo::gerar($this->dados);
 
         // Inserimos as linhas ao arq:
-        fwrite($arq, $headerArquivo . PHP_EOL);
-        fwrite($arq, $headerLote    . PHP_EOL);
+        $conteudo .= $headerArquivo . PHP_EOL;
+        $conteudo .= $headerLote    . PHP_EOL;
         // Detalhes:;
         foreach($this->detalhes as $detalhe){
-            $detalheA      = DetalheSegmentoA::gerar($detalhe);
-            fwrite($arq, $detalheA . PHP_EOL);
+            $detalheA  = DetalheSegmentoA::gerar($detalhe);
+            $conteudo .= $detalheA . PHP_EOL;
         }
         // Trailer de lote:
-        fwrite($arq, $trailerLote    . PHP_EOL);
+        $conteudo .= $trailerLote . PHP_EOL;
         // Trailer de Arquivo:
-        fwrite($arq, $trailerArquivo    . PHP_EOL);
-        fclose($arq);
+        $conteudo .= $trailerArquivo . PHP_EOL;
+        
         //
-        return $nome_arq;
+        return $conteudo;
     }
 }

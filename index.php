@@ -7,18 +7,19 @@
     
     // Informações da remessa:
     $dados_remessa = [
-        'agencia'                      => '0172',
-        'empresa_nome'                 => 'PROSELETA INFORMÁTICA LTDA', 
+        'empresa_nome'                 => 'ProSeleta Ltda', 
         'empresa_inscricao_tipo'       => 2, // 1 = CPF 2 = CNPJ
-        'empresa_inscricao_numero'     => '77777777777777', // 14 carac
-        'empresa_endereco'             => 'SIMONE AKEMI LIMA TAKEDA',
-        'empresa_endereco_numero'      => '33',
-        'empresa_endereco_complemento' => 'apto 05',
+        'empresa_inscricao_numero'     => '17151814161235', // 14 carac
+        'empresa_endereco'             => 'Av Formosa',
+        'empresa_endereco_numero'      => '100',
+        'empresa_endereco_complemento' => 'Vila Nilva',
         'empresa_cidade'               => 'Aracruz',
-        'empresa_cep'                  => '5555555',
+        'empresa_cep'                  => '12345809',
         'empresa_uf'                   => 'es',
-        'conta'                        => '10341',
+        'agencia'                      => '0011',
+        'conta'                        => '74185',
         'dac'                          => '0', // "dígito de auto conferência", é o dígito da conta
+
         // Detalhe
         'detalhe_cod_lote'           => $cod_lote, // sequencial por lote (NOTAS 3)
         'detalhe_tipo_registro'      => '3',
@@ -46,41 +47,35 @@
     
     // Lista dos favorecidos:
     $favorecidos[] = [
-        'detalhe_numero_registro'    => '2', // sequencial por detalhe (NOTAS 9)
+        'detalhe_numero_registro'    => '1', // sequencial por detalhe (NOTAS 9)
         'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
-        // agencia + conta do favorecido (**** ver NOTA 11 pois existem especificações!):
-        'detalhe_favorecido_agencia_conta' => '00024 000000014058 6', 
-        'detalhe_favorecido_nome'    => 'João Augusto Matos',
-        'detalhe_seu_numero'         => 'F02', // número do documento do favorecido, sequencial
-        'detalhe_data_pagamento'     => '01122018',
-        'detalhe_valor_pagamento'    => '99,30',
+        'detalhe_favorecido_nome'    => 'João da Silva',
         'detalhe_cpf_cnpj'           => '77777777777',
-    ];
-    $favorecidos[] = [
-        'detalhe_numero_registro'    => '3', // sequencial por detalhe (NOTAS 9)
-        'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
         // agencia + conta do favorecido (**** ver NOTA 11 pois existem especificações!):
-        'detalhe_favorecido_agencia_conta' => '00024 000000014058 6', 
-        'detalhe_favorecido_nome'    => 'Fernanda Nogueira Ramos',
-        'detalhe_seu_numero'         => 'F03', // número do documento do favorecido, sequencial
-        'detalhe_data_pagamento'     => '01122018',
-        'detalhe_valor_pagamento'    => '25,55',
-        'detalhe_cpf_cnpj'           => '99999999999',
+        'detalhe_favorecido_agencia' => '1100', 
+        'detalhe_favorecido_conta'   => '55555',
+        'detalhe_favorecido_digito'  => '9', 
+        'detalhe_seu_numero'         => 'F01', // número do documento do favorecido, sequencial
+        'detalhe_data_pagamento'     => '05072018',
+        'detalhe_valor_pagamento'    => '99,50',
     ];
+
     $favorecidos[] = [
-        'detalhe_numero_registro'    => '3', // sequencial por detalhe (NOTAS 9)
-        'detalhe_favorecido_banco'   => '341', // código do banco do favorecido
+        'detalhe_numero_registro'    => '2', // sequencial por detalhe (NOTAS 9)
+        'detalhe_favorecido_banco'   => '104', // código do banco do favorecido
+        'detalhe_favorecido_nome'    => 'Maria Joana Rocha',
+        'detalhe_cpf_cnpj'           => '88888888888',
         // agencia + conta do favorecido (**** ver NOTA 11 pois existem especificações!):
-        'detalhe_favorecido_agencia_conta' => '00024 000000014099 6', 
-        'detalhe_favorecido_nome'    => 'Ricardo Morais',
-        'detalhe_seu_numero'         => 'F04', // número do documento do favorecido, sequencial
-        'detalhe_data_pagamento'     => '01122018',
-        'detalhe_valor_pagamento'    => '90',
-        'detalhe_cpf_cnpj'           => '33333333333',
+        'detalhe_favorecido_agencia' => '4444', 
+        'detalhe_favorecido_conta'   => '66666666',
+        'detalhe_favorecido_digito'  => '0', 
+        'detalhe_seu_numero'         => 'F02', // número do documento do favorecido, sequencial
+        'detalhe_data_pagamento'     => '05072018',
+        'detalhe_valor_pagamento'    => '15,30',
     ];
 
     $Remessa = new Remessa('341', 'cnab240', $dados_remessa, $favorecidos);
-    $remessa = $Remessa->gerarRemessa();
+    $remessa = $Remessa->gerarRemessa('remessa_'.date('dmyhis').'.txt');
 ?>
 
 <h1>Remessa de pagamento</h1>
