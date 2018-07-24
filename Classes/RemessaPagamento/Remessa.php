@@ -26,75 +26,7 @@ class Remessa {
     public $dados = [];
     public $detalhes = [];
 
-    /** 
-     * Campos que entram na geração do arquivo;
-     * nome_campo => valor_padrao ou null
-     */
-    public $campos = [
-        // //
-        // 'agencia'                  => null,
-        // 'empresa_inscricao_tipo'   => null, // 1 = CPF 2 = CNPJ
-        // 'empresa_inscricao_numero' => null, // 14 carac
-        // 'empresa_nome'             => null, 
-        // 'empresa_endereco'         => null, 
-        // 'empresa_endereco_numero'  => null,
-        // 'empresa_endereco_complemento' => null,
-        // 'empresa_cidade'           => null,
-        // 'empresa_cep'              => null,
-        // 'empresa_uf'               => null,
-        // 'conta'                    => null,
-        // 'dac'                      => null,
-        'qtd_lotes'                => null,
-        // HeaderArquivo
-        // 'cod_banco'                => '341',
-        // 'cod_lote_servico'         => '0000',
-        // 'header_arq_tipo_registro' => '0',
-        // 'complemento_registro'     => '',
-        // 'layout_arquivo'           => '081',
-        // 'empresa_inscricao_tipo'   => '2', //1 = CPF, 2 = CNPJ
-        // 'empresa_inscricao_numero' => null,
-        // 'agencia'                  => null,
-        // HeaderLote
-        // 'cod_remessa'              => '1', // 1 = remessa, 2 = retorno
-        // 'header_cod_lote'          => '0001', // sequencial (NOTAS 3)
-        // 'header_lote_tipo_registro' => '1',
-        // 'tipo_operacao'            => 'C', // C = Crédito
-        // 'tipo_pagamento'           => '98', // 98 = Diversos, ver a pagina NOTAS > NOTA 4 do PDF
-        // 'forma_pagamento'          => '01', // 01 = CRÉDITO EM CONTA CORRENTE NO ITAÚ / (NOTAS 5)
-        // 'layout_lote'              => '040',
-        // 'identificacao_lancamento' => 'HP13', // NOTAS 13
-        // 'finalidade_lote'          => '10', // NOTAS 6
-        /* Estes campos vêm na hora de gerar o arquivo:
-        // Detalhe Segmento A
-        'detalhe_cod_lote'           => '', // sequencial por lote (NOTAS 3)
-        'detalhe_tipo_registro'      => '3',
-        'segmento_codigo'            => 'A',
-        'detalhe_tipo_movimento'     => '000', // 000 = inclusão de pagamento (NOTAS 10)
-        'detalhe_camara'             => '888', // Notas 37
-        'detalhe_moeda'              => 'REA', // REA ou 009
-        'detalhe_cod_ispb'           => '888', // NOTAS 37
-        'detalhe_finalidade'         => '', // NOTAS 13
-        'detalhe_finalidade_doc_status' => '01', // 01 = crédito em conta - NOTAS 30
-        'detalhe_finalidade_ted'        => '00010', // 00010 = crédito em conta - NOTAS 26
-        'detalhe_aviso'              => '0', // Notas 16
-        // Campos que constam apenas no arquivo de retorno, ou seja, vão em branco ou zeros na remessa:
-        'detalhe_nosso_numero'       => '', // para gerar: brancos. No retorno que vem preenchido (NOTAS 12)
-        'detalhe_data_efetiva'       => '',
-        'detalhe_valor_efetivo'      => '',
-        'detalhe_numero_documento'   => '',
-        // Trailer de lote
-        'trailer_lote_cod_lote'           => $cod_lote,
-        'trailer_lote_tipo_registro'      => '5',
-        // Trailer de arquivo
-        'trailer_arq_cod_lote'       => '9999',
-        'trailer_arq_tipo_registro'  => '9',
-        */
-    ];
-
     public function __construct($dados, $detalhes = [], $codigo_banco, $formato = 'cnab240') {
-
-        // validamos os valores recebidos e valores padrão:
-        $dados = Self::setValoresPadrao($dados);
 
         $this->dados        = $dados;
         $this->formato      = $formato;
@@ -227,21 +159,6 @@ class Remessa {
             if(is_file($a))
                 unlink($a);
         }
-    }
-
-    /**
-     * Setamos os valores padrão, caso não estejam no array de entrada
-     */
-    public function setValoresPadrao($dados) {
-        foreach ($this->campos as $campo => $valor) {
-            if (!isset($dados[$campo])) {
-                if (is_null($valor))
-                    die('O campo "'.$campo.'" não possui um valor padrão.');
-                else
-                    $dados[$campo] = $valor;
-            }
-        }
-        return $dados;
     }
 
     /**
