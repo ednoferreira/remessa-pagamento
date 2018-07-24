@@ -24,7 +24,7 @@ class TrailerLote {
         // TOTAL QTDE REGISTROS        | QTDE REGISTROS DO LOTE                               | 018 023   | 9(06)      | NOTA 17
         $linha .= setValor($dados['qtd_registros'], 6, '0', 'esquerda');
         // (1) TOTAL VALOR PAGTOS      | SOMA VALOR DOS PGTOS DO LOTE                         | 024 041   | 9(16)V9(2) | NOTA 17
-        $linha .= setDecimal($dados['total_pagamentos'], 18, '0', 'esquerda');
+        $linha .= setDecimal($dados['valor_total_pagamentos'], 18, '0', 'esquerda');
         // ZEROS                       | COMPLEMENTO DE REGISTRO                              | 042 059   | 9(18)      |
         $linha .= setValor('', 18, '0', 'esquerda');
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 060 230   | X(171)     |

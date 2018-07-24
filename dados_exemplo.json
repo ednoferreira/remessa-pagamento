@@ -1,0 +1,82 @@
+{   
+    "empresa": {
+        "empresa_nome"                : "EMPRESA LTDA", 
+        "empresa_inscricao_tipo"      : "2",
+        "empresa_inscricao_numero"    : "12345678912345",
+        "empresa_endereco"            : "AV Anapolis, Vila Rica",
+        "empresa_endereco_numero"     : "100",
+        "empresa_endereco_complemento": "CJ 01",
+        "empresa_cidade"              : "Barueri",
+        "empresa_cep"                 : "12345678",
+        "empresa_uf"                  : "SP",
+        "agencia"                     : "1234",
+        "conta"                       : "12345",
+        "dac"                         : "9"
+    },
+
+    "configuracoes": {
+        "_commentarios": "Aqui temos valores que geralmente são fixos e vão nos headers, alguns podem/devem ser alterados em tempo de execução de acordo com a necessidade, como cod_banco, cod_remessa...",
+        "detalhe_cod_lote": "1",
+        "detalhe_tipo_registro": "3",
+        "segmento_codigo": "A",
+        "detalhe_tipo_movimento": "000",
+        "detalhe_camara": "888",
+        "detalhe_moeda": "REA",
+        "detalhe_cod_ispb": "888",
+        "detalhe_finalidade": "",
+        "detalhe_finalidade_doc_status" : "01",
+        "detalhe_finalidade_ted": "00010",
+        "detalhe_aviso": "0",
+        "detalhe_nosso_numero": "",
+        "detalhe_data_efetiva": "",
+        "detalhe_valor_efetivo": "",
+        "detalhe_numero_documento": "",
+        "trailer_lote_cod_lote": "1",
+        "trailer_lote_tipo_registro": "5",
+        "trailer_arq_cod_lote": "9999",
+        "trailer_arq_tipo_registro": "9",
+
+        "cod_banco": "341",
+        "cod_lote_servico": "0000",
+        "header_arq_tipo_registro": "0",
+        "complemento_registro": "",
+        "layout_arquivo": "081",
+
+        "cod_remessa": "1",
+        "header_cod_lote": "0001",
+        "header_lote_tipo_registro": "1",
+        "tipo_operacao": "C",
+        "tipo_pagamento": "98",
+        "forma_pagamento": "01",
+        "layout_lote": "040",
+        "identificacao_lancamento": "HP13",
+        "finalidade_lote": "10",
+
+        "qtd_lotes": "1"
+    },
+
+    "favorecidos": [
+        {
+            "detalhe_favorecido_nome": "FULANO DE TAL",
+            "detalhe_cpf_cnpj": "41155588877",
+            "detalhe_favorecido_banco": "341",
+            "detalhe_favorecido_agencia": "8585",
+            "detalhe_favorecido_conta": "06523",
+            "detalhe_favorecido_digito": "5",
+            "detalhe_seu_numero": "",
+            "detalhe_data_pagamento": "",
+            "detalhe_valor_pagamento": "1"
+        },
+        {
+            "detalhe_favorecido_nome": "BELTRANO DOS SANTOS",
+            "detalhe_cpf_cnpj": "88855566623",
+            "detalhe_favorecido_banco": "341",
+            "detalhe_favorecido_agencia": "1424",
+            "detalhe_favorecido_conta": "12345",
+            "detalhe_favorecido_digito": "1",
+            "detalhe_seu_numero": "",
+            "detalhe_data_pagamento": "",
+            "detalhe_valor_pagamento": "1"
+        }
+    ]
+}

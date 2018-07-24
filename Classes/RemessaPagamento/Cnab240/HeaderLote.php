@@ -7,7 +7,7 @@ class HeaderLote {
 
     /**
      * Gerar o Header de Arquivo
-     * legenda de conteúdo: X = ALFANUMÉRICO 9 = NUMÉRICO V = VÍRGULA DECIMAL ASSUMIDA
+     * legenda de conteÃºdo: X = ALFANUMÉRICO 9 = NUMÉRICO V = VÃRGULA DECIMAL ASSUMIDA
      */
     public static function gerar($dados) {
         $linha = '';
@@ -18,7 +18,7 @@ class HeaderLote {
         // CÓDIGO DO LOTE              | LOTE IDENTIFICAÇÃO DE PAGTOS                         | 004 007   | 9(04)   | NOTA 3
         $linha .= setValor($dados['header_cod_lote'], 4);
         // TIPO DE REGISTRO            | REGISTRO HEADER DE LOTE                              | 008 008   | 9(01)   | 1
-        $linha .= setValor($dados['tipo_registro'], 1);
+        $linha .= setValor($dados['header_lote_tipo_registro'], 1);
         // (1) TIPO DE OPERAÇÃO        | TIPO DA OPERAÇÃO                                     | 009 009   | X(01)   | C=CRÉDITO
         $linha .= setValor($dados['tipo_operacao'], 1);
         // (3) TIPO DE PAGAMENTO       | TIPO DE PAGTO                                        | 010 011   | 9(02)   | NOTA 4
@@ -29,7 +29,7 @@ class HeaderLote {
         $linha .= setValor($dados['layout_lote'], 3);
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 017 017   | X(01)   |
         $linha .= setValor('', 1);
-        // EMPRESA – INSCRIÇÃO         | TIPO INSCRIÇÃO EMPRESA DEBITADA                      | 018 018   | 9(01)   | 1 = CPF 2 = CNPJ
+        // EMPRESA INSCRIÇÃO         | TIPO INSCRIÇÃO EMPRESA DEBITADA                        | 018 018   | 9(01)   | 1 = CPF 2 = CNPJ
         $linha .= setValor($dados['empresa_inscricao_tipo'], 1);
         // INSCRIÇÃO NÚMERO            | CNPJ EMPRESA DEBITADA                                | 019 032   | 9(14)   | NOTA 1
         $linha .= setValor($dados['empresa_inscricao_numero'], 14);
@@ -38,7 +38,7 @@ class HeaderLote {
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 037 052   | X(16)   |
         $linha .= setValor('', 16);
         // AGÊNCIA                     | NÚMERO AGÊNCIA DEBITADA                              | 053 057   | 9(05)   | NOTA 1
-        $linha .= setValor($dados['agencia'], 5);
+        $linha .= setValor($dados['agencia'], 5, '0', 'esquerda');
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 058 058   | X(01)   |
         $linha .= setValor('', 1);
         // CONTA                       | NÚMERO DE C/C DEBITADA                               | 059 070   | 9(12)   | NOTA 1
@@ -56,7 +56,7 @@ class HeaderLote {
         // ENDEREÇO DA EMPRESA         | NOME DA RUA, AV, PÇA, ETC...                         | 143 172   | X(30)   | 
         $linha .= setValor($dados['empresa_endereco'], 30);
         // NÚMERO                      | NÚMERO DO LOCAL                                      | 173 177   | 9(05)   | 
-        $linha .= setValor($dados['empresa_endereco_numero'], 5);
+        $linha .= setValor($dados['empresa_endereco_numero'], 5, '0', 'esquerda');
         // COMPLEMENTO.                | CASA, APTO, SALA, ETC...                             | 178 192   | X(15)   | 
         $linha .= setValor($dados['empresa_endereco_complemento'], 15);
         // CIDADE                      | NOME DA CIDADE                                       | 193 212   | X(20)   | 

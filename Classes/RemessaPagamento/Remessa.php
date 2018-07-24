@@ -7,7 +7,6 @@
  * 
  * Links úteis:
  * http://download.itau.com.br/bankline/SISPAG_CNAB.pdf (manual ITAU Cnab240)
- * https://github.com/andersondanilo/CnabPHP (biblioteca que gera arquivo de remessa de cobrança, apenas para referência)
  */
 
  // Funções auxiliares:
@@ -21,7 +20,7 @@ class Remessa {
     // Lista de bancos disponíveis:
     const ITAU = 341;
 
-    public $caminhoArquivo = 'remessas';
+    public $caminhoArquivo = 'remessas_geradas';
 
     public $formato;
     public $dados = [];
@@ -32,39 +31,39 @@ class Remessa {
      * nome_campo => valor_padrao ou null
      */
     public $campos = [
-        //
-        'agencia'                  => null,
-        'empresa_inscricao_tipo'   => null, // 1 = CPF 2 = CNPJ
-        'empresa_inscricao_numero' => null, // 14 carac
-        'empresa_nome'             => null, 
-        'empresa_endereco'         => null, 
-        'empresa_endereco_numero'  => null,
-        'empresa_endereco_complemento' => null,
-        'empresa_cidade'           => null,
-        'empresa_cep'              => null,
-        'empresa_uf'               => null,
-        'conta'                    => null,
-        'dac'                      => null,
-        'qtd_lotes'                => '1',
+        // //
+        // 'agencia'                  => null,
+        // 'empresa_inscricao_tipo'   => null, // 1 = CPF 2 = CNPJ
+        // 'empresa_inscricao_numero' => null, // 14 carac
+        // 'empresa_nome'             => null, 
+        // 'empresa_endereco'         => null, 
+        // 'empresa_endereco_numero'  => null,
+        // 'empresa_endereco_complemento' => null,
+        // 'empresa_cidade'           => null,
+        // 'empresa_cep'              => null,
+        // 'empresa_uf'               => null,
+        // 'conta'                    => null,
+        // 'dac'                      => null,
+        'qtd_lotes'                => null,
         // HeaderArquivo
-        'cod_banco'                => '341',
-        'cod_lote_servico'         => '0000',
-        'tipo_registro'            => '0',
-        'complemento_registro'     => '',
-        'layout_arquivo'           => '081',
-        'empresa_inscricao_tipo'   => '2', //1 = CPF, 2 = CNPJ
-        'empresa_inscricao_numero' => null,
-        'agencia'                  => null,
+        // 'cod_banco'                => '341',
+        // 'cod_lote_servico'         => '0000',
+        // 'header_arq_tipo_registro' => '0',
+        // 'complemento_registro'     => '',
+        // 'layout_arquivo'           => '081',
+        // 'empresa_inscricao_tipo'   => '2', //1 = CPF, 2 = CNPJ
+        // 'empresa_inscricao_numero' => null,
+        // 'agencia'                  => null,
         // HeaderLote
-        'cod_remessa'              => '1', // 1 = remessa, 2 = retorno
-        'header_cod_lote'          => '0001', // sequencial (NOTAS 3)
-        'tipo_registro'            => '1',
-        'tipo_operacao'            => 'C', // C = Crédito
-        'tipo_pagamento'           => '98', // 98 = Diversos, ver a pagina NOTAS > NOTA 4 do PDF
-        'forma_pagamento'          => '01', // 01 = CRÉDITO EM CONTA CORRENTE NO ITAÚ / (NOTAS 5)
-        'layout_lote'              => '040',
-        'identificacao_lancamento' => 'HP13', // NOTAS 13
-        'finalidade_lote'          => '10', // NOTAS 6
+        // 'cod_remessa'              => '1', // 1 = remessa, 2 = retorno
+        // 'header_cod_lote'          => '0001', // sequencial (NOTAS 3)
+        // 'header_lote_tipo_registro' => '1',
+        // 'tipo_operacao'            => 'C', // C = Crédito
+        // 'tipo_pagamento'           => '98', // 98 = Diversos, ver a pagina NOTAS > NOTA 4 do PDF
+        // 'forma_pagamento'          => '01', // 01 = CRÉDITO EM CONTA CORRENTE NO ITAÚ / (NOTAS 5)
+        // 'layout_lote'              => '040',
+        // 'identificacao_lancamento' => 'HP13', // NOTAS 13
+        // 'finalidade_lote'          => '10', // NOTAS 6
         /* Estes campos vêm na hora de gerar o arquivo:
         // Detalhe Segmento A
         'detalhe_cod_lote'           => '', // sequencial por lote (NOTAS 3)
@@ -92,7 +91,7 @@ class Remessa {
         */
     ];
 
-    public function __construct($codigo_banco, $formato = 'cnab240', $dados, $detalhes = []) {
+    public function __construct($dados, $detalhes = [], $codigo_banco, $formato = 'cnab240') {
 
         // validamos os valores recebidos e valores padrão:
         $dados = Self::setValoresPadrao($dados);
@@ -127,7 +126,7 @@ class Remessa {
         // qtd de registros(detalhes)
         $this->dados['qtd_registros'] = count($this->detalhes);
         // Soma dos pagamentos:
-        $this->dados['total_pagamentos'] = Self::getTotalPagamentos($this->detalhes);
+        $this->dados['valor_total_pagamentos'] = Self::getValorTotalPagamentos($this->detalhes);
 
         switch ($this->formato) {
             // Formato CNAB240
@@ -196,7 +195,6 @@ class Remessa {
         }
         fwrite($arq, $conteudo);
         fclose($arq);
-
         return $caminho_arquivo;
     }
 
@@ -235,9 +233,9 @@ class Remessa {
      * Setamos os valores padrão, caso não estejam no array de entrada
      */
     public function setValoresPadrao($dados) {
-        foreach($this->campos as $campo => $valor) {
-            if(!isset($dados[$campo]) ){
-                if ( is_null($valor) )
+        foreach ($this->campos as $campo => $valor) {
+            if (!isset($dados[$campo])) {
+                if (is_null($valor))
                     die('O campo "'.$campo.'" não possui um valor padrão.');
                 else
                     $dados[$campo] = $valor;
@@ -249,10 +247,10 @@ class Remessa {
     /**
      * Obter o total de pagamentos do lote
      */
-    public function getTotalPagamentos($detalhes) {
+    public function getValorTotalPagamentos($detalhes) {
         $total = 0;
-        foreach($detalhes as $d){
-            if(isset($d['detalhe_valor_pagamento'])){
+        foreach ($detalhes as $d) {
+            if (isset($d['detalhe_valor_pagamento']) && ($d['detalhe_valor_pagamento'] > 0)) {
                 // substituir a vírgula pelo ponto, para não dar problema na soma:
                 $valor = str_replace(',', '.', $d['detalhe_valor_pagamento']);
                 $total += $valor;

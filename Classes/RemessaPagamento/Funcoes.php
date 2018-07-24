@@ -46,6 +46,8 @@ function setDecimal($valor, $tamanho){
     // removemos os pontos e vírgulas do valor
     $valor = str_replace(',', '', $valor);
     $valor = str_replace('.', '', $valor);
+    // queremos o valor com centavos, ex 1 = 100, sendo os dois zeros as duas casas decimais
+    $valor = floor($valor * 100);
     // retornamos completo com os zeros de acordo com o tamanho deteminado:
     return setValor($valor, $tamanho, '0', 'esquerda');
 }
