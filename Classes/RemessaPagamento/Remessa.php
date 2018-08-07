@@ -18,7 +18,8 @@ date_default_timezone_set('America/Sao_Paulo');
 class Remessa {
 
     // Lista de bancos disponíveis:
-    const ITAU = 341;
+    const BRASIL = 001;
+    const ITAU   = 341;
 
     public $caminhoArquivo = 'remessas_geradas';
 
@@ -50,6 +51,9 @@ class Remessa {
 
         // insere os dados do banco aos parâmetros:
         $this->dados['banco'] = Self::getBanco($this->codigo_banco);
+
+        // Verificamos os dados obrigatórios
+        $this->dados = Self::verificarObrigatorios($this->dados);
 
         // Tratamos os dados de entrada:
         $this->dados    = Self::tratarString($this->dados);
@@ -95,7 +99,7 @@ class Remessa {
     }
 
     /**
-     * Recebe um código de banco e retorna o código e nome do mesmo
+     * Recebe um código de banco e retorna o código, nome e alguns valores específicos/fixos de cada instituição
      * @author Edno
      */
     public static function getBanco($cod_banco)
@@ -105,7 +109,23 @@ class Remessa {
         if($cod_banco == self::ITAU){
             $retorno = [
                 'cod_banco'  => self::ITAU,
-                'nome_banco' => 'ITAÚ UNIBANCO S.A.',    
+                'nome_banco' => 'ITAÚ UNIBANCO S.A.',
+                // Layout de arquivo 240 (015 a 017)
+                'header_arquivo' => [
+                    'layout_arquivo' => '081',
+                ]
+            ];
+        }
+
+        if($cod_banco == self::BRASIL){
+            $retorno = [
+                'cod_banco'  => self::BRASIL,
+                'nome_banco' => 'Banco Do Brasil S.A.',
+                // Layout de arquivo 240 (015 a 017)
+                'header_arquivo' => [
+                    'layout_arquivo' => '000',
+                ],
+                'convenio_codigo' => '0126',
             ];
         }
 
@@ -204,5 +224,19 @@ class Remessa {
         }
 
         return $conteudo;
+    }
+
+    /**
+     * Verificar campos que são obrigatório na hora de gerar a remessa, ex:
+     * alguns bancos têm convênio, outros não tem e preenchemos com brancos
+     */
+    function verificarObrigatorios($dados) {
+        
+        if(empty($dados['convenio']))
+            $dados['convenio'] = '';
+        if(empty($dados['convenio_codigo']))
+            $dados['convenio_codigo'] = '';
+        
+        return $dados;
     }
 }

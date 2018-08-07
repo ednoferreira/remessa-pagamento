@@ -15,7 +15,7 @@
     },
 
     "configuracoes": {
-        "_commentarios": "Aqui temos valores que geralmente são fixos e vão nos headers, alguns podem/devem ser alterados em tempo de execução de acordo com a necessidade, como cod_banco, cod_remessa...",
+        "_commentarios": "Aqui temos valores que geralmente são fixos e vao nos headers, alguns podem/devem ser alterados em tempo de execução de acordo com a necessidade, como cod_banco, cod_remessa...",
         "detalhe_cod_lote": "1",
         "detalhe_tipo_registro": "3",
         "segmento_codigo": "A",

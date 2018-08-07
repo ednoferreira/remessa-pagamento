@@ -14,7 +14,7 @@ class TrailerLote {
         // NOME DO CAMPO               | SIGNIFICADO                                          |  POSIÇÃO  | PICTURE    | CONTEÚDO
         //============================================================================================
         // CÓDIGO DO BANCO             | CÓDIGO BANCO NA COMPENSAÇÃO                          | 001 003   | 9(03)      | 341
-        $linha .= setValor($dados['cod_banco'], 3);
+        $linha .= setValor($dados['banco']['cod_banco'], 3, '0', 'esquerda');
         // CÓDIGO DO LOTE              | LOTE IDENTIFICAÇÃO DE PAGTOS                         | 004 007   | 9(04)      | NOTA 3
         $linha .= setValor($dados['trailer_lote_cod_lote'], 4, '0', 'esquerda');
         // TIPO DE REGISTRO            | REGISTRO TRAILER DE LOTE                             | 008 008   | 9(01)      | 5

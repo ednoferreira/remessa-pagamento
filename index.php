@@ -2,6 +2,10 @@
 
     require 'Classes/RemessaPagamento/Remessa.php';
 
+    // Para qual banco gerar a remessa? (ver lista disponível em Remessa.php)
+    $cod_banco      = '001';
+    $remessa_teste  = true; // Alguns bancos aceitam teste(BB)
+
     // Dados vindos de um json:
     $json = json_decode(file_get_contents('dados.json'), true);
     // Dados da empresa + configurações gerais
@@ -18,7 +22,8 @@
         $sequencial++;
     }
 
-    $Remessa = new Remessa($dados_remessa, $favorecidos, '341', 'cnab240');
+    $dados_remessa['arquivo_teste'] = $remessa_teste;
+    $Remessa = new Remessa($dados_remessa, $favorecidos, $cod_banco, 'cnab240');
     $remessa = $Remessa->gerarRemessa('remessa_'.date('dmyhis').'.txt');
 ?>
 

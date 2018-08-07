@@ -2,19 +2,24 @@
 
 /**
  * Gerar o header de Lote
+ * 
+ * Conferências:
+ * Itau ✓
+ * Brasil ⊘
  */
 class HeaderLote {
 
     /**
      * Gerar o Header de Arquivo
-     * legenda de conteÃºdo: X = ALFANUMÉRICO 9 = NUMÉRICO V = VÃRGULA DECIMAL ASSUMIDA
+     * legenda de conteúdo: X = ALFANUMÉRICO 9 = NUMÉRICO V = VÍRGULA DECIMAL ASSUMIDA
      */
     public static function gerar($dados) {
+
         $linha = '';
         // NOME DO CAMPO               | SIGNIFICADO                                          |  POSIÇÃO  | PICTURE | CONTEÚDO
         //============================================================================================
         // CÓDIGO DO BANCO             | CÓDIGO BANCO NA COMPENSAÇÃO                          | 001 003   | 9(03)   | 341
-        $linha .= setValor($dados['cod_banco'], 3);
+        $linha .= setValor($dados['banco']['cod_banco'], 3, '0', 'esquerda');
         // CÓDIGO DO LOTE              | LOTE IDENTIFICAÇÃO DE PAGTOS                         | 004 007   | 9(04)   | NOTA 3
         $linha .= setValor($dados['header_cod_lote'], 4);
         // TIPO DE REGISTRO            | REGISTRO HEADER DE LOTE                              | 008 008   | 9(01)   | 1
@@ -29,14 +34,18 @@ class HeaderLote {
         $linha .= setValor($dados['layout_lote'], 3);
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 017 017   | X(01)   |
         $linha .= setValor('', 1);
-        // EMPRESA INSCRIÇÃO         | TIPO INSCRIÇÃO EMPRESA DEBITADA                        | 018 018   | 9(01)   | 1 = CPF 2 = CNPJ
+        // EMPRESA INSCRIÇÃO           | TIPO INSCRIÇÃO EMPRESA DEBITADA                      | 018 018   | 9(01)   | 1 = CPF 2 = CNPJ
         $linha .= setValor($dados['empresa_inscricao_tipo'], 1);
         // INSCRIÇÃO NÚMERO            | CNPJ EMPRESA DEBITADA                                | 019 032   | 9(14)   | NOTA 1
         $linha .= setValor($dados['empresa_inscricao_numero'], 14);
+        
+        // **************** DIVERGÊNCIAS: na FEBRABAN este é um campo único, do 33 ao 52 (20)
         // IDENTIFICAÇÃO DO LANÇAMENTO | IDENTIFICAÇÃO DO LANÇAMENTO NO EXTRATO DO FAVORECIDO | 033 036   | X(04)   | NOTA 13
         $linha .= setValor($dados['identificacao_lancamento'], 4);
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 037 052   | X(16)   |
         $linha .= setValor('', 16);
+        // ******************************
+
         // AGÊNCIA                     | NÚMERO AGÊNCIA DEBITADA                              | 053 057   | 9(05)   | NOTA 1
         $linha .= setValor($dados['agencia'], 5, '0', 'esquerda');
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 058 058   | X(01)   |

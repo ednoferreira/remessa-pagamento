@@ -51,3 +51,41 @@ function setDecimal($valor, $tamanho){
     // retornamos completo com os zeros de acordo com o tamanho deteminado:
     return setValor($valor, $tamanho, '0', 'esquerda');
 }
+
+/**
+ * Um dump mais rápido:
+ */
+function dd($item) {
+
+    if (is_array($item)) {
+        echo '<pre>'.print_r($item, 1).'</pre>';
+    }else{
+        echo $item;
+    }
+
+    exit;
+}
+
+/**
+ * Montar a linha de convênio 
+ * - header de arquivo
+ */
+function montarConvenio($dados) {
+    $linha = '';
+    switch($dados['banco']['cod_banco']) {
+
+        // Itau
+        case '341':
+            $linha .= setValor('', 20);
+        break;
+
+        // BB
+        case '001':
+            $linha .= setValor($dados['convenio_numero'], 9, '0', 'esquerda');
+            $linha .= setValor($dados['banco']['convenio_codigo'], 4, '0', 'esquerda');
+            $linha .= setValor('', 5);
+            $linha .= setValor( empty($dados['arquivo_teste']) ? '' : 'TS', 2);
+        break;
+    }
+    return $linha;
+}
