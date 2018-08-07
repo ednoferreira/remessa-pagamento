@@ -109,28 +109,28 @@ function montarContaFavorecido($dados) {
             // Se for do banco Itau:
             if ($dados['detalhe_favorecido_banco'] == '341') {
                 $linha  = setValor('', 1, '0');
-                $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 4, '0', 'esquerda');
+                $linha .= setValor($dados['detalhe_favorecido_agencia'], 4, '0', 'esquerda');
                 $linha .= setValor('', 1);
                 $linha .= setValor('', 6, '0');
-                $linha .= setValor($detalhe['detalhe_favorecido_conta'], 6, '0', 'esquerda');
+                $linha .= setValor($dados['detalhe_favorecido_conta'], 6, '0', 'esquerda');
                 $linha .= setValor('', 1);
-                $linha .= setValor($detalhe['detalhe_favorecido_digito'], 1);
+                $linha .= setValor($dados['detalhe_favorecido_digito'], 1);
             } else {
-                $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
+                $linha .= setValor($dados['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
                 $linha .= setValor('', 1);
-                $linha .= setValor($detalhe['detalhe_favorecido_conta'], 12, '0', 'esquerda');
+                $linha .= setValor($dados['detalhe_favorecido_conta'], 12, '0', 'esquerda');
                 $linha .= setValor('', 1);
-                $linha .= setValor($detalhe['detalhe_favorecido_dac'], 1);
+                $linha .= setValor($dados['detalhe_favorecido_dac'], 1);
             }
         break;
 
         // padrão Febraban:
         default: 
-            $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
-            $linha .= setValor( empty($detalhe['detalhe_favorecido_agencia_dv']) ? '' : $detalhe['detalhe_favorecido_agencia_dv'], 1);
-            $linha .= setValor($detalhe['detalhe_favorecido_conta'], 12, '0', 'esquerda');
-            $linha .= setValor( empty($detalhe['detalhe_favorecido_conta_dv']) ? '' : $detalhe['detalhe_favorecido_conta_dv'], 1);
-            $linha .= setValor($detalhe['detalhe_favorecido_dac'], 1);
+            $linha .= setValor($dados['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
+            $linha .= setValor( empty($dados['detalhe_favorecido_agencia_dv']) ? '' : $dados['detalhe_favorecido_agencia_dv'], 1);
+            $linha .= setValor($dados['detalhe_favorecido_conta'], 12, '0', 'esquerda');
+            $linha .= setValor( empty($detalhe['detalhe_favorecido_conta_dv']) ? '' : $dados['detalhe_favorecido_conta_dv'], 1);
+            $linha .= setValor($dados['detalhe_favorecido_dac'], 1);
     }
     return $linha;
 }

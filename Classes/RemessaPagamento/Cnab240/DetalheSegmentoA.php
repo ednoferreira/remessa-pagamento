@@ -15,7 +15,7 @@ class DetalheSegmentoA {
         // NOME DO CAMPO               | SIGNIFICADO                                          |  POSICAO  | PICTURE     | CONTEUDO
         //============================================================================================
         // CÓDIGO DO BANCO             | CÓDIGO BANCO NA COMPENSAÇÃO                          | 001 003   | 9(03)       | 341
-        $linha .= setValor($dados['banco']['cod_banco'], 3, '0', 'esquerda');
+        $linha .= setValor($detalhe['banco']['cod_banco'], 3, '0', 'esquerda');
         // CÓDIGO DO LOTE              | LOTE DE SERVIÇO                                      | 004 007   | 9(04)       | NOTA 3
         $linha .= setValor($detalhe['detalhe_cod_lote'], 4, '0', 'esquerda');
         // TIPO DE REGISTRO            | REGISTRO DETALHE DE LOTE                             | 008 008   | 9(01)       | 3
@@ -31,7 +31,7 @@ class DetalheSegmentoA {
         // BANCO FAVORECIDO            | CÓDIGO BANCO FAVORECIDO                              | 021 023   | 9(03)       | 
         $linha .= setValor($detalhe['detalhe_favorecido_banco'], 3);
         // AGÊNCIA CONTA               | AGÊNCIA CONTA FAVORECIDO                             | 024 043   | X(20)       | NOTA 11
-        $linha .= montarContaFavorecido($dados);
+        $linha .= montarContaFavorecido($detalhe);
         // NOME DO FAVORECIDO          | NOME DO FAVORECIDO                                   | 044 073   | X(30)       | NOTA 35
         $linha .= setValor($detalhe['detalhe_favorecido_nome'], 30, ' ');
         // SEU NÚMERO                  | N° DOCTO ATRIBUÍDO PELA EMPRESA                      | 074 093   | X(20)       | 
