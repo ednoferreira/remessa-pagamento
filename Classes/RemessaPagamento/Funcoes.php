@@ -68,15 +68,21 @@ function dd($item) {
 
 /**
  * Montar a linha de convênio 
- * - header de arquivo
+ * segmentos: header de arquivo, header de lote
  */
-function montarConvenio($dados) {
+function montarConvenio($dados, $segmento = 'header de arquivo') {
+
     $linha = '';
     switch($dados['banco']['cod_banco']) {
 
         // Itau
         case '341':
-            $linha .= setValor('', 20);
+            switch($segmento) {
+                case 'header de lote':
+                    $linha .= setValor($dados['identificacao_lancamento'], 4);
+                break;
+                default: $linha .= setValor('', 20);
+            }
         break;
 
         // BB

@@ -38,22 +38,16 @@ class HeaderLote {
         $linha .= setValor($dados['empresa_inscricao_tipo'], 1);
         // INSCRIÇÃO NÚMERO            | CNPJ EMPRESA DEBITADA                                | 019 032   | 9(14)   | NOTA 1
         $linha .= setValor($dados['empresa_inscricao_numero'], 14);
-        
-        // **************** DIVERGÊNCIAS: na FEBRABAN este é um campo único, do 33 ao 52 (20)
-        // IDENTIFICAÇÃO DO LANÇAMENTO | IDENTIFICAÇÃO DO LANÇAMENTO NO EXTRATO DO FAVORECIDO | 033 036   | X(04)   | NOTA 13
-        $linha .= setValor($dados['identificacao_lancamento'], 4);
-        // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 037 052   | X(16)   |
-        $linha .= setValor('', 16);
-        // ******************************
-
+        // Linha com especificações em cada banco:                                            | 033 052   | X(20)   | 
+        $linha .= montarConvenio($dados, 'header de lote');
         // AGÊNCIA                     | NÚMERO AGÊNCIA DEBITADA                              | 053 057   | 9(05)   | NOTA 1
         $linha .= setValor($dados['agencia'], 5, '0', 'esquerda');
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 058 058   | X(01)   |
-        $linha .= setValor('', 1);
+        $linha .= setValor($dados['agencia_dv'], 1);
         // CONTA                       | NÚMERO DE C/C DEBITADA                               | 059 070   | 9(12)   | NOTA 1
         $linha .= setValor($dados['conta'], 12, '0', 'esquerda');
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 071 071   | X(01)   | 
-        $linha .= setValor('', 1);
+        $linha .= setValor($dados['conta_dv'], 1);
         // DAC                         | DAC DA AGÊNCIA/CONTA DEBITADA                        | 072 072   | 9(01)   | NOTA 1
         $linha .= setValor($dados['dac'], 1);
         // NOME DA EMPRESA             | NOME DA EMPRESA DEBITADA                             | 073 102   | X(30)   | 
@@ -71,7 +65,7 @@ class HeaderLote {
         // CIDADE                      | NOME DA CIDADE                                       | 193 212   | X(20)   | 
         $linha .= setValor($dados['empresa_cidade'], 20);
         // CEP                         | CEP                                                  | 213 220   | 9(08)   |
-        $linha .= setValor($dados['empresa_cep'], 8);
+        $linha .= setValor($dados['empresa_cep'], 8, '0', 'esquerda');
         // ESTADO                      | SIGLA DO ESTADO                                      | 221 222   | X(02)   | 
         $linha .= setValor($dados['empresa_uf'], 2);
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 223 230   | X(08)   | 
