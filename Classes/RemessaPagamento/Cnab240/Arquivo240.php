@@ -33,8 +33,10 @@ class Arquivo240 {
         $conteudo .= HeaderArquivo::gerar($this->dados) . $this->quebra_linha;
         // Header de lote:
         $conteudo .= HeaderLote::gerar($this->dados) . $this->quebra_linha;
-        // Detalhes:;
+        // Detalhes:
+        $sequencial = 1;
         foreach($this->detalhes as $detalhe){
+            $detalhe['detalhe_numero_registro'] = $sequencial++;
             $conteudo .=  DetalheSegmentoA::gerar($detalhe) . $this->quebra_linha;
         }
         // Trailer de lote:

@@ -27,11 +27,11 @@ class DetalheSegmentoA {
         // TIPO DE MOVIMENTO           | TIPO DE MOVIMENTO                                    | 015 017   | 9(03)       | NOTA 10
         $linha .= setValor($detalhe['detalhe_tipo_movimento'], 3);
         // CÃMARA                      | CÓDIGO DA CÃMARA CENTRALIZADORA                      | 018 020   | 9(03)       | NOTA 37
-        $linha .= setValor($detalhe['detalhe_camara'], 3);
+        $linha .= setValor('', 3, '0');
         // BANCO FAVORECIDO            | CÓDIGO BANCO FAVORECIDO                              | 021 023   | 9(03)       | 
         $linha .= setValor($detalhe['detalhe_favorecido_banco'], 3);
         // AGÊNCIA CONTA               | AGÊNCIA CONTA FAVORECIDO                             | 024 043   | X(20)       | NOTA 11
-        $linha .= setValor($detalhe['detalhe_favorecido_agencia_conta'], 20);
+        $linha .= montarContaFavorecido($dados);
         // NOME DO FAVORECIDO          | NOME DO FAVORECIDO                                   | 044 073   | X(30)       | NOTA 35
         $linha .= setValor($detalhe['detalhe_favorecido_nome'], 30, ' ');
         // SEU NÚMERO                  | N° DOCTO ATRIBUÍDO PELA EMPRESA                      | 074 093   | X(20)       | 
@@ -39,15 +39,13 @@ class DetalheSegmentoA {
         // (1) DATA DE PAGTO           | DATA PREVISTA PARA PAGTO                             | 094 101   | 9(08)       | DDMMAAAA
         $linha .= setValor($detalhe['detalhe_data_pagamento'], 8);
         // MOEDA TIPO                | TIPO DA MOEDA                                          | 102 104   | X(03)       | REA OU 009
-        $linha .= setValor($detalhe['detalhe_moeda'], 3);
-        // CÓDIGO ISPB                 | IDENTIFICAÇÃO DA INSTITUIÇÃO PARA O SPB              | 105 112   | 9(08)       | NOTA 37
-        $linha .= setValor($detalhe['detalhe_cod_ispb'], 8, '0', 'esquerda');
-        // ZEROS                       | COMPLEMENTO DE REGISTRO                              | 113 119   | 9(07)       | 
-        $linha .= setValor('', 7, '0');
+        $linha .= getTipoMoeda($dados);
+        // CÓDIGO ISPB                 | IDENTIFICAÇÃO DA INSTITUIÇÃO PARA O SPB              | 105 119   | 9(08)       | NOTA 37
+        $linha .= setValor($detalhe['detalhe_cod_ispb'], 15, '0', 'esquerda');
         // (1) VALOR DO PAGTO          | VALOR PREVISTO DO PAGTO                              | 120 134   | 9(13)V9(02) |
         $linha .= setDecimal($detalhe['detalhe_valor_pagamento'], 15, '0', 'esquerda');
-        // (*) NOSSO NÚMERO            | N° DOCTO ATRIBUÍDO PELO BANCO                        | 135 149   | X(15)       | NOTA 12
-        $linha .= setValor($detalhe['detalhe_nosso_numero'], 15);
+        // (*) Num Doc            | N° DOCTO ATRIBUÍDO PELO BANCO                        | 135 149   | X(15)       | NOTA 12
+        $linha .= setValor('', 15);
         // BRANCOS                     | COMPLEMENTO DE REGISTRO                              | 150 154   | X(05)
         $linha .= setValor('', 5);
         //(*) DATA EFETIVA             | DATA REAL EFETIVAÇÃO DO PAGTO                        | 155 162   | 9(08)       | DDMMAAAA

@@ -72,8 +72,7 @@ class HeaderLote {
         $linha .= setValor('', 8);
         // (*) OCORRÊNCIAS             | CÓDIGO OCORRÊNCIAS P/RETORNO                         | 231 240   | X(10)   | NOTA 8
         $linha .= setValor($dados['ocorrencias'], 10);
-
-        return $linha;
         
+        return $linha;
     }
 }

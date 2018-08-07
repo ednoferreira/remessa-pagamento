@@ -95,3 +95,56 @@ function montarConvenio($dados, $segmento = 'header de arquivo') {
     }
     return $linha;
 }
+
+/**
+ * Montar os dados da conta do favorecido de acordo com o banco de geração do arquivo e o banco do favorecido,
+ * ex: para o Itau, um favorecido de outro banco deve ser tratado de forma diferente
+ */
+function montarContaFavorecido($dados) {
+    $linha = '';
+    switch($dados['banco']['cod_banco']) {
+
+        // Itau
+        case '341':
+            // Se for do banco Itau:
+            if ($dados['detalhe_favorecido_banco'] == '341') {
+                $linha  = setValor('', 1, '0');
+                $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 4, '0', 'esquerda');
+                $linha .= setValor('', 1);
+                $linha .= setValor('', 6, '0');
+                $linha .= setValor($detalhe['detalhe_favorecido_conta'], 6, '0', 'esquerda');
+                $linha .= setValor('', 1);
+                $linha .= setValor($detalhe['detalhe_favorecido_digito'], 1);
+            } else {
+                $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
+                $linha .= setValor('', 1);
+                $linha .= setValor($detalhe['detalhe_favorecido_conta'], 12, '0', 'esquerda');
+                $linha .= setValor('', 1);
+                $linha .= setValor($detalhe['detalhe_favorecido_dac'], 1);
+            }
+        break;
+
+        // padrão Febraban:
+        default: 
+            $linha .= setValor($detalhe['detalhe_favorecido_agencia'], 5, '0', 'esquerda');
+            $linha .= setValor( empty($detalhe['detalhe_favorecido_agencia_dv']) ? '' : $detalhe['detalhe_favorecido_agencia_dv'], 1);
+            $linha .= setValor($detalhe['detalhe_favorecido_conta'], 12, '0', 'esquerda');
+            $linha .= setValor( empty($detalhe['detalhe_favorecido_conta_dv']) ? '' : $detalhe['detalhe_favorecido_conta_dv'], 1);
+            $linha .= setValor($detalhe['detalhe_favorecido_dac'], 1);
+    }
+    return $linha;
+}
+
+/**
+ * Obter a moeda de acordo com o banco: alguns utilizam BRL, outros REA ou 009
+ */
+function getTipoMoeda($dados) {
+    switch($dados['banco']['cod_banco']) {
+        case '341':
+            return 'REA';
+        break;
+
+        default: 
+            return 'BRL';
+    }
+}

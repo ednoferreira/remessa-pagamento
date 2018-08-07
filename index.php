@@ -15,13 +15,6 @@
 
     //echo '<pre>'.print_r($dados_remessa, 1).'</pre>'; exit;
 
-    // Configuramos alguns campos em tempo de execução:
-    $sequencial = 1;
-    foreach ($favorecidos as $index => $f) {
-        $favorecidos[$index]['detalhe_numero_registro'] = $sequencial;
-        $sequencial++;
-    }
-
     $dados_remessa['arquivo_teste'] = $remessa_teste;
     $Remessa = new Remessa($dados_remessa, $favorecidos, $cod_banco, 'cnab240');
     $remessa = $Remessa->gerarRemessa('remessa_'.date('dmyhis').'.txt');

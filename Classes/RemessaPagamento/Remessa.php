@@ -71,10 +71,6 @@ class Remessa {
                 $r = new Arquivo240($this->dados, $caminho_arquivo);
                 
                 foreach($this->detalhes as $detalhe){
-
-                    // Montar o campo agencia_conta dependendo do banco:
-                    $detalhe['detalhe_favorecido_agencia_conta'] = Self::montarAgenciaContaFavorecido($detalhe);
-
                     // mesclamos o detalhe com o array principal:
                     $detalhe = array_merge($detalhe, $this->dados);
                     $r->inserirDetalhe($detalhe);
